@@ -26,3 +26,70 @@
 // }
 
 // خیلی برام سخته. میمونم تا پنشجنبه با کمک منتور حلش کنم :))))))
+
+
+let todos = [
+    { task: 'Wash the dishes', completed: false },
+    { task: 'Do the shopping', completed: false },
+];
+
+
+populateTodoList(todos)
+
+function addNewTodo(e) {
+    e.preventDefault()
+
+    let todoText = input.value.trim();
+
+    if (todoText.length > 0) {
+        todos.push({ task: todoText, completed: false })
+        populateTodoList(todos)
+    }
+
+    input.value = ''
+}
+
+
+
+let input = document.getElementById('todoInput');
+
+
+function populateTodoList(todos) {
+    let list = document.getElementById('todo-list');
+    list.innerHTML = ''
+
+    todos.forEach((todo, index) => {
+        let li = document.createElement('li');
+        li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+
+        li.innerText = todo.task;
+
+        let badge = document.createElement('span')
+        badge.classList.add('badge', 'bg-primary', 'rounded-pill')
+
+        let checkIcon = document.createElement('i');
+        checkIcon.classList.add('fa', 'fa-check');
+        checkIcon.addEventListener('click', () => {
+            if (todo.completed) {
+                todo.completed = false
+                li.style.textDecoration = 'none'
+            } else {
+                todo.completed = true
+                li.style.textDecoration = 'line-through'
+            }
+        });
+        badge.appendChild(checkIcon);
+
+        let trashIcon = document.createElement('i');
+        trashIcon.classList.add('fa', 'fa-trash');
+        trashIcon.addEventListener('click', () => {
+            todos.splice(index, 1)
+            populateTodoList(todos)
+        });
+        badge.appendChild(trashIcon)
+
+        li.appendChild(badge)
+        list.appendChild(li)
+    });
+}
+
